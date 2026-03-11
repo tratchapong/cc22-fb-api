@@ -15,14 +15,7 @@ const userData = [
 ]
 
 async function main() {
-  console.log('Clean table...')
-  // await prisma.$executeRaw`SET FOREIGN_KEY_CHECKS = 0`
-  // await prisma.$executeRaw`TRUNCATE TABLE \`Like\` `
-  // await prisma.$executeRaw`TRUNCATE TABLE Comment`
-  // await prisma.$executeRaw`TRUNCATE TABLE Post`
-  // await prisma.$executeRaw`TRUNCATE TABLE Relationship`
-  // await prisma.$executeRaw`TRUNCATE TABLE User`
-  // await prisma.$executeRaw`SET FOREIGN_KEY_CHECKS = 1`
+  console.log('Clean table...')  
   await prisma.$transaction([
     prisma.$executeRawUnsafe('SET FOREIGN_KEY_CHECKS = 0;'),
     prisma.$executeRawUnsafe('TRUNCATE TABLE `Like`;'),
@@ -32,6 +25,7 @@ async function main() {
     prisma.$executeRawUnsafe('TRUNCATE TABLE `User`;'),
     prisma.$executeRawUnsafe('SET FOREIGN_KEY_CHECKS = 1;'),
   ]);
+
   console.log('Start seeding...')
   const createdUsers = await prisma.user.createMany({
     data : userData,
