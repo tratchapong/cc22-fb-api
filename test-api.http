@@ -12,3 +12,14 @@ Content-Type: application/json
 # Post message
 POST http://localhost:8899/api/post
 
+###
+
+#test not-found
+GET http://localhost:8899/api/product
+
+###
+
+GET http://localhost:8899/api/auth/me
+
+###
+
