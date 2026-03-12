@@ -14,4 +14,5 @@ const prisma = new PrismaClient({ adapter : adapter})
 
 // prisma.$queryRaw`show tables`.then(console.log)
 
+
 export { prisma }
