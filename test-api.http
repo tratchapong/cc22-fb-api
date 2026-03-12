@@ -4,7 +4,7 @@ content-type: application/json
 
 {
 #  "identity" : "1234567890",
-#  "identity" : "someone@ggg.mail",
+ "identity" : "someone@ggg.mail",
  "firstName" : "someone",
  "lastName" : "codecamp",
  "password" : "123456",
