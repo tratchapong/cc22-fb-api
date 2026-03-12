@@ -1,3 +1,16 @@
+
+# Login api
+POST http://localhost:8899/api/auth/login HTTP/1.1
+content-type: application/json
+
+{
+ "identity" : "andy@ggg.mail",
+ "password" : "123456"
+}
+###
+
+
+
 # Register api
 POST http://localhost:8899/api/auth/register HTTP/1.1
 content-type: application/json
@@ -13,17 +26,6 @@ content-type: application/json
 ###
 
 
-
-# Login
-POST http://localhost:8899/api/auth/me HTTP/1.1
-Content-Type: application/json
-
-{
-  "identity" : "andy@ggg.mail",
-  "password" : "123456"
-}
-
-###
 
 # Post message
 POST http://localhost:8899/api/post
