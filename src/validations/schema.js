@@ -1,7 +1,10 @@
 import {z} from 'zod'
+import bcrypt from 'bcrypt'
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const mobileRegex = /^[0-9]{10,15}$/
+
+const identityKey = val => emailRegex.test(val) ? 'email' : 'mobile'
 
 export const registerSchema = z.object({
   identity : z.string().min(2, "must have more than 2 characters")
@@ -13,20 +16,15 @@ export const registerSchema = z.object({
 }).refine( input => input.password === input.confirmPassword, {
   message : "password must match with confirm password",
   path : ['confirmPassword']
+}).transform( async data => {
+  // console.log('in transform : ', data)
+  const output = {
+    [identityKey(data.identity)] : data.identity,
+    password : await bcrypt.hash(data.password, 8),
+    firstName : data.firstName,
+    lastName : data.lastName,
+  }
+  return output
 })
 
-// const testUser = {
-//   identity : "1234567890",
-//   firstName : "andy",
-//   lastName : "cc22",
-//   password : "123456",
-//   confirmPassword : "123456"
-// }
 
-// try {
-//   const result = registerSchema.parse(testUser)
-//   console.log(result)
-// }catch(error) {
-//   console.log('Validation Error!!!')
-//   console.log(error.flatten())
-// }

@@ -3,7 +3,7 @@ POST http://localhost:8899/api/auth/register HTTP/1.1
 content-type: application/json
 
 {
-#  "identity" : "1234567890",
+#  "identity" : "12345678",
  "identity" : "someone@ggg.mail",
  "firstName" : "someone",
  "lastName" : "codecamp",

@@ -6,41 +6,29 @@ import { registerSchema } from '../validations/schema.js'
 
 
 export async function register(req, res, next) {
-  const { identity, firstName, lastName, password, confirmPassword } = req.body
   // validation
-  const data = registerSchema.parse(req.body)
+  const data = await registerSchema.parseAsync(req.body)
+  
   // check identity is email or mobile
-  const identityKey = identityKeyCheck(identity)
-  if (!identityKey) {
-    return next(createHttpError[400]('identity must be email or phone number'))
-  }
+  const identityKey = data.email ? 'email' : 'mobile'
+  console.log('idetityKey =', identityKey)
    // find user for non-duplicate
   const foundUser = await prisma.user.findUnique({
-    where: { [identityKey] : identity }
+    where: { [identityKey] : data[identityKey] }
   })
   if(foundUser) {
     return next(createHttpError[409]('This user already register'))
   }
   // create new users
-  const newUser = {
-    [identityKey] : identity,
-    password : await bcrypt.hash(password, 8),
-    firstName : firstName,
-    lastName : lastName
-  }
-  const createdUser = await prisma.user.create({ data: newUser})
-  // console.log(createdUser)
+  
+  const createdUser = await prisma.user.create({ data: data})
+
   const userInfo = { 
     id : createdUser.id,
-    [identityKey] : identity,
+    [identityKey] : data.identity,
     firstName : createdUser.firstName,
     lastName : createdUser.lastName,
   }
-  // const userInfo2 = {}
-  // userInfo2.id = createdUser.id
-  // userInfo2[identityKey] = identity
-  // userInfo2['firstName'] = createdUser.firstName
-  // userInfo2.lastName = createdUser.lastName
   res.json({
     message : 'Register Successful',
     user : userInfo
