@@ -1,3 +1,7 @@
+# Get Me
+GET http://localhost:8899/api/auth/me HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzczMzcyMjQzLCJleHAiOjE3NzQ2NjgyNDN9.cY0kWJpltdX_Av1WzAgokX3CIa4uJZPt8ei6zdAZkpI
+###
 
 # Login api
 POST http://localhost:8899/api/auth/login HTTP/1.1

@@ -62,6 +62,6 @@ export async function login(req, res, next) {
 }
 
 export async function getMe(req, res, next) {
-  console.log(x)
-  res.send('GetMe Controller')
+  console.log('in getme', req.user)
+  res.json({ user : req.user})
 }
