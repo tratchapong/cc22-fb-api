@@ -24,15 +24,22 @@ const userData = [
 
 async function main() {
   console.log('Clean table...')
-  await prisma.$transaction([
-    prisma.$executeRawUnsafe('SET FOREIGN_KEY_CHECKS = 0;'),
-    prisma.$executeRawUnsafe('TRUNCATE TABLE `Like`;'),
-    prisma.$executeRawUnsafe('TRUNCATE TABLE `Comment`;'),
-    prisma.$executeRawUnsafe('TRUNCATE TABLE `Post`;'),
-    prisma.$executeRawUnsafe('TRUNCATE TABLE `Relationship`;'),
-    prisma.$executeRawUnsafe('TRUNCATE TABLE `User`;'),
-    prisma.$executeRawUnsafe('SET FOREIGN_KEY_CHECKS = 1;'),
-  ]);
+
+  const modelNames = Object.keys(prisma).filter(
+    (key) => !key.startsWith('$') && !key.startsWith('_') && key !== 'constructor'
+  );
+  console.log(modelNames)
+
+  await prisma.$transaction(async (tx) => {
+    await tx.$executeRawUnsafe('SET FOREIGN_KEY_CHECKS = 0;');
+
+    for (const name of modelNames) {
+      // ใช้ Backticks ครอบชื่อเสมอเพื่อความชัวร์
+      await tx.$executeRawUnsafe(`TRUNCATE TABLE \`${name}\`;`);
+    }
+
+    await tx.$executeRawUnsafe('SET FOREIGN_KEY_CHECKS = 1;');
+  });
 
   console.log('Start seeding...')
   const createdUsers = await prisma.user.createMany({
@@ -49,8 +56,3 @@ main().then(async () => {
   await prisma.$disconnect()
   process.exit(1)
 })
-
-
-
-
-

@@ -1,17 +1,29 @@
 import { ZodError } from "zod"
 
-export default function(err, req, res, next) {
-  if(err instanceof ZodError) {
-       return res.status(400).json({
-           success: false,
-           errors: err.flatten().fieldErrors
-           // errors: err.issues.map(err => err.message)
-       })
-   }
+export default function (err, req, res, next) {
+  if (err.name === 'TokenExpiredError') {
+    return res.status(401).json({
+      error: 'Token Expired',
+      message: 'Your session has expired. Please log in again.'
+    });
+  }
+  if (err.name === 'JsonWebTokenError') {
+    return res.status(401).json({
+      error: 'Invalid Token',
+      message: 'The provided token is invalid or malformed.'
+    });
+  }
+  if (err instanceof ZodError) {
+    return res.status(400).json({
+      success: false,
+      errors: err.flatten().fieldErrors
+      // errors: err.issues.map(err => err.message)
+    })
+  }
   console.error(err)
   res.status(err.status || 500)
   res.json({
-    status : err.status || 500,
-    message : err.message
+    status: err.status || 500,
+    message: err.message
   })
 }
