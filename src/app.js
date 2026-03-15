@@ -1,9 +1,17 @@
 import express from 'express'
+import cors from 'cors'
 import authRoute from './routes/auth.route.js'
 import notFoundMiddleware from './middlewares/notFound.middleware.js'
 import errorMiddleware from './middlewares/error.middleware.js'
 
 const app = express()
+app.use(cors({
+  origin: ["http://localhost:5173"], // allowed origins
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true, // allow cookies if needed
+}));
+
+
 app.use(express.json())
 
 app.use('/api/auth', authRoute )
