@@ -19,7 +19,7 @@ JWT_SECRET=
 |/api/post/:id|put|y|id|-|{message, image(file)}
 |/api/post/:id|delete|y|id|-|-
 |/api/post/:id/comment|post|y|id|-|{message}
+|/api/post/comment/:id|delete|y|id|-|
 |/api/post/:id/like|post|y|id|-|
 |/api/post/:id/like|delete|y|id|-|-
-
 
