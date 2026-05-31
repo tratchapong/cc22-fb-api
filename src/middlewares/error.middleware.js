@@ -1,4 +1,4 @@
-import { ZodError } from "zod"
+import { z, ZodError } from "zod"
 
 export default function (err, req, res, next) {
   if (err.name === 'TokenExpiredError') {
@@ -16,8 +16,7 @@ export default function (err, req, res, next) {
   if (err instanceof ZodError) {
     return res.status(400).json({
       success: false,
-      errors: err.flatten().fieldErrors
-      // errors: err.issues.map(err => err.message)
+      errors: z.flattenError(err).fieldErrors
     })
   }
   console.error(err)
